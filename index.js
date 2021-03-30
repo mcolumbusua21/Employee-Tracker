@@ -59,6 +59,9 @@ async function init() {
     case "Update employee by manager":
       updateEmployee();
       break;
+    case "View all roles":
+      viewAllRoles();
+      break;
     case "Add role":
       addRole();
       break;
@@ -92,6 +95,17 @@ async function viewEmployeesDepartment() {
   console.table(data)
     init();
   };
+
+  async function viewDepartments() {
+    const data = await connection.query("SELECT * FROM employee");
+    console.table(data);
+    init();
+  }
+  async function viewAllRoles() {
+    const data = await connection.query("SELECT * FROM employee");
+    console.table(data);
+    init();
+  }
 
   async function addEmployee() {
     const rolesArr = await connection.query("SELECT title, id FROM roles")
@@ -147,6 +161,20 @@ async function viewEmployeesDepartment() {
         salary: salary,
     })
     
-    init()
+    viewAllRoles()
+  }   
+  async function addDepartment(){
+      const { names } = await inquirer.prompt ([
+          {
+              type: "input",
+              message: "What is the name of this department?",
+              name: "names",
+          },
+          ])
+      await connection.query("INSERT INTO department SET ?", {
+        names: names,
+ })
+
+    viewDepartments()
   }   
 
