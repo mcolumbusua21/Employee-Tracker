@@ -1,12 +1,14 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
+const util = require("util")
+
 const connection = mysql.createConnection({
   host: "localhost",
-  port: 3306,
   user: "root",
-  database: "employee_connectionDB",
   password: "",
+  database: "employee_connectionDB",
 });
+connection.query = util.promisify(connection.query);
 
 connection.connect((err) => {
   if (err) throw err;
@@ -80,70 +82,71 @@ async function init() {
   }
 }
 
-function viewEmployeesDepartment() {
-  const data =  connection.query("SELECT * FROM employee");
-  console.log(data);
+async function viewEmployeesDepartment() {
+  const data = await connection.query("SELECT * FROM employee");
+  console.table(data);
   init();
 }
- function viewEmployeesManager() {
-  const data = connection.query("SELECT * FROM employee");
-  console.log(data)
+ async function viewEmployeesManager() {
+  const data = await connection.query("SELECT * FROM employee");
+  console.table(data)
     init();
   };
 
-//   async function addEmployee() {
-    
-//     const { firstName, lastName, roles_id } = await inquirer.prompt([
-//       { name: "firstName",
-//         message: "What is the employees first name?",
-//       },
-//       { name: "lastName",
-//         message: "What is the employees last name?",
-//       },
+  async function addEmployee() {
+    const rolesArr = await connection.query("SELECT title, id FROM roles")
+    // console.log(rolesArr);
+    const { firstName, lastName, roles_id } = await inquirer.prompt([
+      { name: "firstName",
+        message: "What is the employees first name?",
+      },
+      { name: "lastName",
+        message: "What is the employees last name?",
+      },
   
-//       { name: "roles",
-//           type: 'list',
-//           message: "What is the employees role?",
-//           choices: ["Sales Lead", "Salesperson", "Accountant", "Account Manager", "Software Engineer", "Lead Engineer", "Lawyer", "Legal Team Lead" ]
-//       }  
-//       ])
-//   const result = await connection.query("INSERT INTO employee SET ?", {
-//       firstName: firstName,
-//       lastName: lastName,
-//       roles_id: roles_id,
-//   })
+      { name: "roles_id",
+          type: 'list',
+          message: "What is the employees role?",
+          choices: rolesArr.map((role) => role.title)
+      }  
+      ])
+   await connection.query("INSERT INTO employee SET ?", {
+      firstName: firstName,
+      lastName: lastName,
+      roles_id: rolesArr.filter(role => roles_id === role.title)[0].id,
+  })
     
-//       console.table(result)
-//       // const data = connection.query("SELECT * FROM employee");
-//       // console.table(data);
-//       init();
-//   }
+      viewEmployeesDepartment();
+      // const data = connection.query("SELECT * FROM employee");
+      // console.table(data);
+  }
   
-//   async function addRole(){
-//       const { title, department_id, salary } = await inquirer.prompt ([
-//           {
-//               type: "input",
-//               message: "What is the title of this role?",
-//               name: "title"
-//           },
-//           {
-//               type: "list",
-//               message: "Which department is this role for?",
-//               name: "department",
-//               choices: ["Sales", "Finance", "Legal", "Engineering"]
-//           },
-//           {
-//               type: "number",
-//               message: "What is the salary for this role?",
-//               name: "salary"
-//           }
-//       ])
-//       const result = await connection.query("INSERT INTO roles SET ?", {
-//         title: title,
-//         department: department_id,
-//         salary: salary,
-//     })
-//     console.table(result)
-//     init()
-//   }   
+  async function addRole(){
+      const departmentArr = await connection.query("SELECT names, id FROM department")
+      const { title, department_id, salary } = await inquirer.prompt ([
+          {
+              type: "input",
+              message: "What is the title of this role?",
+              name: "title",
+          },
+          {
+              type: "list",
+              message: "Which department is this role for?",
+              name: "department_id",
+              choices: departmentArr.map((department) => department.names)
+          },
+          {
+              type: "number",
+              message: "What is the salary for this role?",
+              name: "salary"
+          }
+      ])
+      await connection.query("INSERT INTO roles SET ?", {
+        title: title,
+        department_id: departmentArr.filter(department => department_id === department.names)[0].id,
+        salary: salary,
+    })
+    
+    init()
+  }   
 
