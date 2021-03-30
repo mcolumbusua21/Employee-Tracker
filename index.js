@@ -94,7 +94,7 @@ async function viewEmployeesManager() {
     
 
 async function addEmployee() {
-  const result = await connection.query("SELECT * FROM roles")  
+    
   const { firstName, lastName, roles_id } = await inquirer.prompt([
     { name: "firstName",
       message: "What is the employees first name?",
@@ -106,14 +106,14 @@ async function addEmployee() {
     { name: "roles",
         type: 'list',
         message: "What is the employees role?",
-        choices: result.map(({ roles_id: roles }, i) => ({
-            roles_id,
-            value: i,
-   }))
-    
+        choices: []
     }  
     ])
-
+const result = await connection.query("INSERT INTO auctions SET ?", {
+    firstName: firstName,
+    lastName: lastName,
+    roles: roles_id,
+})
   
     console.table(result)
     // const data = connection.query("SELECT * FROM employee");
