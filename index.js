@@ -13,7 +13,7 @@ connection.connect((err) => {
   init();
 });
 async function init() {
-  const { action } = await inquirer.prompt([
+  const { action }= await inquirer.prompt([
     {
       type: "list",
       name: "action",
@@ -30,10 +30,12 @@ async function init() {
         "View all departments",
         "Add department",
         "Remove department",
-        "Quit",
-      ],
-    },
+        "Quit"
+      ]
+    }
   ]);
+
+  
 
   switch (action) {
     case "View all employees by department":
@@ -89,20 +91,32 @@ async function viewEmployeesManager() {
     init();
   };
 
+    
+
 async function addEmployee() {
-  const data = await inquirer.prompt([
-    {
-      name: "first name",
+  const result = await connection.query("SELECT * FROM roles")  
+  const { firstName, lastName, roles_id } = await inquirer.prompt([
+    { name: "firstName",
       message: "What is the employees first name?",
     },
-    {
-      name: "last name",
+    { name: "lastName",
       message: "What is the employees last name?",
     },
 
-    {
-      name: "role",
-      message: "What is the employees role?",
-    },
-  ]);
+    { name: "roles",
+        type: 'list',
+        message: "What is the employees role?",
+        choices: result.map(({ roles_id: roles }, i) => ({
+            roles_id,
+            value: i,
+   }))
+    
+    }  
+    ])
+
+  
+    console.table(result)
+    // const data = connection.query("SELECT * FROM employee");
+    // console.table(data);
+    init();
 }
