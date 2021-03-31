@@ -184,4 +184,4 @@ const deleteData = async function (connection){
     name: "table",
     message: "Which table do you want to delete data from?",
     choices: [ "Department", "Role", "Employee"]
-}
+} await connection.query(DELETE * FROM )
