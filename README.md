@@ -69,7 +69,7 @@ https://mcolumbusua21.github.io/Employee-Tracker/
 When employers need to track all their employees they can use this application. They can add and delete employees, roles and departments. As well as update all areas.
 
 ## Video
-
+https://youtu.be/ONK5FrwCMlo
 
 ## Questions
 ​
