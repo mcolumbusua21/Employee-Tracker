@@ -1,6 +1,7 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
-const util = require("util")
+const util = require("util");
+const { title } = require("process");
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -178,10 +179,52 @@ async function viewEmployeesDepartment() {
     viewDepartments()
   }   
 
-const deleteData = async function (connection){
-  const {table} = await inquirer.prompt([{
-    type: "list",
-    name: "table",
-    message: "Which table do you want to delete data from?",
-    choices: [ "Department", "Role", "Employee"]
-} await connection.query(DELETE * FROM )
+  const removeEmployee = async () => {
+    // request the data from that table
+    const data = await connection.query("SELECT * FROM employee");
+    // build your inquirer prompt based off the data and table passed in
+    const { id } = await inquirer.prompt({
+      name: "id",
+      type: "list",
+      message: "What would you like to remove?",
+      choices: data.map((employee) => ({
+        name: employee.firstName + " " + employee.lastName,
+        value: employee.id,
+      })),
+    });
+    console.log(id)
+      removeEmployee();
+  }
+  const removeRole = async () => {
+    // request the data from that table
+    const data = await connection.query("SELECT * FROM role");
+    // build your inquirer prompt based off the data and table passed in
+    const { id } = await inquirer.prompt({
+      name: "id",
+      type: "list",
+      message: "What would you like to remove?",
+      choices: data.map((employee) => ({
+        title: title,
+        value: role.id,
+      })),
+    });
+    console.log(id)
+      removeRole();
+  }
+  const removeDepartment = async () => {
+    // request the data from that table
+    const data = await connection.query("SELECT * FROM department");
+    // build your inquirer prompt based off the data and table passed in
+    const { id } = await inquirer.prompt({
+      name: "id",
+      type: "list",
+      message: "What would you like to remove?",
+      choices: data.map((department) => ({
+        names: names,
+        value: department.id,
+      })),
+    });
+    console.log(id)
+      removeDepartment();
+  }
+    // remove the item based off id
