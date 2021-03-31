@@ -97,12 +97,12 @@ async function viewEmployeesDepartment() {
   };
 
   async function viewDepartments() {
-    const data = await connection.query("SELECT * FROM employee");
+    const data = await connection.query("SELECT * FROM department");
     console.table(data);
     init();
   }
   async function viewAllRoles() {
-    const data = await connection.query("SELECT * FROM employee");
+    const data = await connection.query("SELECT * FROM roles");
     console.table(data);
     init();
   }
@@ -178,3 +178,10 @@ async function viewEmployeesDepartment() {
     viewDepartments()
   }   
 
+const deleteData = async function (connection){
+  const {table} = await inquirer.prompt([{
+    type: "list",
+    name: "table",
+    message: "Which table do you want to delete data from?",
+    choices: [ "Department", "Role", "Employee"]
+}
