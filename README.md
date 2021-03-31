@@ -1,3 +1,4 @@
+
 # Employee-Tracker
 
 
@@ -64,6 +65,7 @@ github.com/mcolumbusua21
 
 ## Link 
 https://mcolumbusua21.github.io/Employee-Tracker/
+![Screen Shot 2021-03-31 at 2 44 27 PM](https://user-images.githubusercontent.com/78819536/113215366-996b5b00-922f-11eb-803e-b8a677ba1554.png)
 
 ## Usage 
 When employers need to track all their employees they can use this application. They can add and delete employees, roles and departments. As well as update all areas.
