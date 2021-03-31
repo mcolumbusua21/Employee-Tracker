@@ -197,15 +197,15 @@ async function viewEmployeesDepartment() {
   }
   const removeRole = async () => {
     // request the data from that table
-    const data = await connection.query("SELECT * FROM role");
+    const data = await connection.query("SELECT * FROM roles");
     // build your inquirer prompt based off the data and table passed in
     const { id } = await inquirer.prompt({
       name: "id",
       type: "list",
       message: "What would you like to remove?",
-      choices: data.map((employee) => ({
+      choices: data.map((roles_id) => ({
         title: title,
-        value: role.id,
+        value: roles_id.id,
       })),
     });
     console.log(id)
@@ -219,9 +219,9 @@ async function viewEmployeesDepartment() {
       name: "id",
       type: "list",
       message: "What would you like to remove?",
-      choices: data.map((department) => ({
+      choices: data.map((department_id) => ({
         names: names,
-        value: department.id,
+        value: department_id.id,
       })),
     });
     console.log(id)
