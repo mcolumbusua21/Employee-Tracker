@@ -45,6 +45,15 @@ npm i mysql
 ```
 npm i inquirer
 ```
+```
+npm i express
+```
+```
+npm i mysql
+```
+```
+node index
+```
 
 
 ## Contact 
