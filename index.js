@@ -219,17 +219,18 @@ const removeDepartment = async () => {
   // request the data from that table
   const data = await connection.query("SELECT * FROM department");
   // build your inquirer prompt based off the data and table passed in
-  const { id } = await inquirer.prompt({
+  const { names } = await inquirer.prompt({
     name: "id",
     type: "list",
     message: "What would you like to remove?",
     choices: data.map((department_id) => ({
-      names: names,
-      value: department_id.id,
+      value: department_id.names,
     })),
   });
-  console.log(id);
-  removeDepartment();
+  await connection.query("DELETE FROM department WHERE ?", {
+    names,
+  });
+  viewDepartments();
 };
 
 async function updateRole() {
