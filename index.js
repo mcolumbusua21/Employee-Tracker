@@ -190,30 +190,30 @@ const removeEmployee = async () => {
       name: employee.firstName + " " + employee.lastName,
       value: employee.id,
     })),
-    });
+  });
   await connection.query("DELETE FROM employee WHERE ?", {
-    id
-  }
-  )
-    viewEmployeesDepartment();
-  
+    id,
+  });
+  viewEmployeesDepartment();
+
   // removeEmployee();
 };
 const removeRole = async () => {
   // request the data from that table
   const data = await connection.query("SELECT * FROM roles");
   // build your inquirer prompt based off the data and table passed in
-  const { id } = await inquirer.prompt({
-    name: "id",
+  const { title } = await inquirer.prompt({
+    name: "title",
     type: "list",
     message: "What would you like to remove?",
     choices: data.map((roles_id) => ({
-      title: title,
-      value: roles_id.id,
+      value: roles_id.title,
     })),
   });
-  console.log(id);
-  removeRole();
+  await connection.query("DELETE FROM roles WHERE ?", {
+    title,
+  });
+  viewAllRoles();
 };
 const removeDepartment = async () => {
   // request the data from that table
